@@ -11,6 +11,7 @@ CREATE TABLE users (
   givenName varchar(40) NOT NULL,
   fullName varchar(40) NOT NULL,
   googleId varchar(40) NOT NULL,
+  picture varchar(255),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
