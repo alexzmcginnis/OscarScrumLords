@@ -21,7 +21,7 @@ import ChatRoom from './chat/ChatRoom.jsx';
 import BikeRegistry from './NavBar/BikeRegistry.jsx';
 
 import axios from 'axios';
-cd 
+
 
 
 

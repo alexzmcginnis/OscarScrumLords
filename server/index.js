@@ -9,6 +9,9 @@ const io = new Server(server); //socket instance
 
 io.on('connection', (socket) => { //listens for connectin
   console.log('a user is connected');
+  socket.on('disconnect', () => {
+    console.log('user chao chao');
+  });
 })
 
 
