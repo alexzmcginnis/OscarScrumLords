@@ -16,11 +16,12 @@ import UserList from './UserList/UserList.jsx';
 import VisitProfile from './UserList/VisitProfile.jsx';
 import SendMessage from './Messages/SendMessage.jsx';
 import Inbox from './Messages/Inbox.jsx';
-
+import ChatRoom from './chat/ChatRoom.jsx';
 
 import BikeRegistry from './NavBar/BikeRegistry.jsx';
-import axios from 'axios';
 
+import axios from 'axios';
+cd 
 
 
 
@@ -121,8 +122,11 @@ const App = () => {
             <li><Link to='/calendar' >Events</Link></li>
             <li><Link to='/userProfile'>My Profile</Link></li>
             <li><Link to='/userList'>User List</Link></li>
-            <li><Link to='/inbox'>Inbox</Link></li>
             <li><Link to='/registry'>Bike Registry</Link></li>
+            <li><Link to='/inbox'>Inbox</Link></li>
+            <li><Link to='/chatroom'>Chat</Link></li>
+
+
             <li>{loggedIn ?
               `Hello ${userObj.givenName}` :
               'Please Sign in!'
@@ -185,6 +189,12 @@ const App = () => {
             <Route path='/registry'>
               <BikeRegistry />
             </Route>
+
+            <Route path='/chatroom'>
+              <ChatRoom />
+            </Route>
+
+
           </Switch>
         </main>
       </Router>
