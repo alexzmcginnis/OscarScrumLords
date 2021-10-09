@@ -23,9 +23,13 @@ const Users = db.define('users', {
   fullName: {
     type: Sequelize.STRING
   },
+  picture: {
+    type: Sequelize.STRING
+  },
   googleId: {
     type: Sequelize.STRING
   },
+ 
 });
  
 const Landmarks = db.define('landmarks', {

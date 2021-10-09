@@ -28,6 +28,7 @@ passport.use(new GoogleStrategy({
   callbackURL: '/google/callback'
 }, (accessToken, refreshToken, profile, done) => {
   const {sub, name, picture, email, family_name, given_name} = profile._json;
+  console.log('picture, picture', picture);
  
 
   Users.findOne({
@@ -43,7 +44,8 @@ passport.use(new GoogleStrategy({
         email: email,
         familyName: family_name,
         givenName: given_name,
-        googleId: sub
+        googleId: sub,
+        picture: picture
 
         
       })
