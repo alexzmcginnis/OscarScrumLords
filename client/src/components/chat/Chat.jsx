@@ -9,6 +9,9 @@ const StyledChat = styled.div`
     border-radius: 5px;
     height: 400px;
     width: 600px;
+    display: flex;
+    flex-direction: column;
+    
   }
 
   .msg {
@@ -16,17 +19,25 @@ const StyledChat = styled.div`
     border: 0px solid grey;
     border-radius: 3px;
     margin: 5px;
+    width: fit-content;
+    height: fit-content;
 
+  }
+
+  #msgFootnote {
+    font-size: 12px;
+    text-align: right;
   }
   
   #user {
     background-color: pink;
-    margin-left: 70px;
-    text-align: right;
+ 
+    align-self: flex-end;
   }
   #others {
     background-color: lavender;
     margin-right: 70px;
+    align-self: flex-start;
   }
 `;
 
@@ -59,7 +70,6 @@ const Chat = ({socket, username, room}) => {
   useEffect(() => {
     socket.on('receivedMessage', (data) => {
       setAllMessages ((list) => [...list, data]);
-      console.log('all messages', allMessages);
   
     });
   }, [socket]);
@@ -78,7 +88,8 @@ const Chat = ({socket, username, room}) => {
             id={message.username === username
               ? 'user'
               : 'others'}
-          >user: {message.username}  message: {message.message}
+          >{message.message}
+          <p id='msgFootnote'>{message.username}</p>
           </div>))}
         </div>
         <div className='interaction'>

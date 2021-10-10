@@ -40,7 +40,6 @@ const ChatRoom = () => {
   
   useEffect(async ()=> { //on mount get the user info
     const {data} = await axios.get('/routes/profile');
-    console.log('data', data);
     setCurrentUser[data];
     const userName = data
       ? data.fullName
