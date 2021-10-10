@@ -20,7 +20,8 @@ const Chat = ({socket, username, room}) => {
 
       await socket.emit('message', messageObj);
       setSentMessages(list => [...list, messageObj]);
-      console.log('sentMessages', sentMessages);
+      setAllMessages(list => [...list, messageObj])
+      setMessage('')
      
 
     }
@@ -40,7 +41,7 @@ const Chat = ({socket, username, room}) => {
         <p>chatroom {room} </p>
       </div>
       <div className='messages'>
-        {allMessages.map((message, i) => <div key={i} >{message.message}</div>)}
+        {allMessages.map((message, i) => <div key={i} >user: {message.username}  message: {message.message}</div>)}
       </div>
       <div className='interaction'>
         <input type='text' placeholder='message text' onChange={e => setMessage(event.target.value)} />
