@@ -44,7 +44,7 @@ const Chat = ({socket, username, room}) => {
         {allMessages.map((message, i) => <div key={i} >user: {message.username}  message: {message.message}</div>)}
       </div>
       <div className='interaction'>
-        <input type='text' placeholder='message text' onChange={e => setMessage(event.target.value)} />
+        <input type='text' placeholder='message text' onChange={e => setMessage(e.target.value)} value={message} />
         <button onClick={sendMessage} >send</button>
       </div>
     </div>
