@@ -1,42 +1,70 @@
 import React, {useState, useEffect} from 'react';
 import io from 'socket.io-client';
 import Chat from './Chat.jsx';
+import axios from 'axios';
+import styled from 'styled-components';
+import { Card, Button, DropdownButton, Dropdown} from 'react-bootstrap';
 
-const socket = io.connect('http://localhost:3001');
+const aws = false;
+const deployedDNS = '';
+const host = aws === true
+  ? deployedDNS
+  : 'localhost';
+
+
+const socket = io.connect(`http://${host}:3001`);
+
+const StyledRoom = styled.div`
+  .buttonWrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  .heading {
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 4px;
+  margin: 10px;
+  }
+  .click {
+    margin: 10px;
+  }
+`;
 
 const ChatRoom = () => {
 
-  //const [fullName, setFullName] = useState('')
-  const [message, setMessage] = useState({ message: ''});
-  const [roomMessages, setRoomMessages] = useState([]);
-
-  //for selecting a room
   const [username, setUsername] = useState('');
   const [room, setRoom] = useState('');
+  const [showChat, setShowChat] = useState(false);
+
+  const [currentUser, setCurrentUser] = useState({}); //get this when enter room
+  
+  useEffect(async ()=> { //on mount get the user info
+    const {data} = await axios.get('/routes/profile');
+    console.log('data', data);
+    setCurrentUser[data];
+    const userName = data
+      ? data.fullName
+      : 'anonymous';
+    setUsername(userName);
+    //data && setUsername(data.fullName)
+
+  }, []); 
   
 
-  useEffect(() => {
-    socket.on('message', (message) => {
-      console.log('here', message);
-      console.log(roomMessages);
-      setRoomMessages([...roomMessages, message]);
-    });
-  });
+
 
   // const changeMessage = e => setMessage(e.target.value)
   const changeMessage = (e) => setMessage({...message, message: e.target.value});
   
-  const submitMessage = (e) => {
-    socket.emit('message', { message} );
-    setMessage({message: ''});
 
-  };
 
 
   const joinRoom = () => {
+    setShowChat(true);
     if (username !== '' && room !== '') {
       socket.emit('joinRoom', room);
     }
+
   };
 
   const chatComponents = () => {
@@ -47,45 +75,51 @@ const ChatRoom = () => {
     ));
   };
 
+  const selectRoom = (e) => {
+    console.log('e', e);
+    setRoom(e);
+    
+  };
+
   return (
-    <div>chat room
-      <div>chat rooms available
-
-        <input 
-          type="text"
-          onChange={e => setUsername(e.target.value)}
-          placeholder='username'
-          value={username}
-        /> 
-
-        <input 
-          type="text"
-          onChange={e => setRoom(e.target.value)}
-          placeholder='roomname'
-          value={room}
-        /> 
-      
-        <button onClick={joinRoom}>send</button>
-
-      </div>
-
-      
-      message: 
-      <input 
-        type="text"
-        onChange={e => changeMessage(e, 'message')}
-        value={message.message}
-      /> 
-      
-      <button onClick={submitMessage}>send</button>
-
+    <StyledRoom>
       <div>
+        <Card className='heading'>
+          <h3>Welcome, {username}.  Please select a topic and chat!</h3>
+        </Card>
 
-        <Chat socket={socket} username={username} room={room} />
+        <div className='buttonWrapper'>
+          <DropdownButton
+            onSelect={selectRoom}
+         
+            title='what do you want to discuss'
+            className='dropdown click'
+          >
+            <Dropdown.Item eventKey="bikes">Bikes</Dropdown.Item>
+            <Dropdown.Item eventKey='whereToRide'>Where to ride</Dropdown.Item>
+            <Dropdown.Item eventKey='general'>General</Dropdown.Item>
+
+          </DropdownButton>
+
+    
+      
+          <Button className='fButton click' onClick={joinRoom}>Chat!</Button>
+
+
+        </div>
+    
+      </div>
+   
+
+      
+  
+      <div>
+        {showChat && <Chat socket={socket} username={username} room={room} />}
+       
 
       </div>
     
-    </div>
+    </StyledRoom>
   );
 };
 

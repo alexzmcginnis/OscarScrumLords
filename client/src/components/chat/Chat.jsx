@@ -1,12 +1,42 @@
 import React, {useState, useEffect} from 'react';
+import { Button, Card} from 'react-bootstrap';
+import styled from 'styled-components';
+
+const StyledChat = styled.div`
+  .messages {
+    background-color: white;
+    border: 1px grey solid;
+    border-radius: 5px;
+    height: 400px;
+    width: 600px;
+  }
+
+  .msg {
+    padding: 5px;
+    border: 0px solid grey;
+    border-radius: 3px;
+    margin: 5px;
+
+  }
+  
+  #user {
+    background-color: pink;
+    margin-left: 70px;
+    text-align: right;
+  }
+  #others {
+    background-color: lavender;
+    margin-right: 70px;
+  }
+`;
 
 const Chat = ({socket, username, room}) => {
 
+
+
   const [message, setMessage] = useState('');
   const [allMessages, setAllMessages] = useState([]);
-  const [sentMessages, setSentMessages] = useState([]);
-  const [receivedMessages, setReceivedMessages] = useState([]);
-  const [messageList, setMessageList] = useState([]);
+
 
 
   const sendMessage = async () => {
@@ -19,9 +49,8 @@ const Chat = ({socket, username, room}) => {
       };
 
       await socket.emit('message', messageObj);
-      setSentMessages(list => [...list, messageObj]);
-      setAllMessages(list => [...list, messageObj])
-      setMessage('')
+      setAllMessages(list => [...list, messageObj]);
+      setMessage('');
      
 
     }
@@ -30,24 +59,34 @@ const Chat = ({socket, username, room}) => {
   useEffect(() => {
     socket.on('receivedMessage', (data) => {
       setAllMessages ((list) => [...list, data]);
+      console.log('all messages', allMessages);
   
     });
   }, [socket]);
 
 
   return (
-    <div>
+    <StyledChat>
       <div>
-        <p>chatroom {room} </p>
+        <div>
+          <p>CurrentTopic:{room} </p>
+        </div>
+        <div className='messages'>
+          {allMessages.map((message, i) =>( <div 
+            key={i} 
+            className = 'msg'
+            id={message.username === username
+              ? 'user'
+              : 'others'}
+          >user: {message.username}  message: {message.message}
+          </div>))}
+        </div>
+        <div className='interaction'>
+          <input type='text' placeholder='message text' onChange={e => setMessage(e.target.value)} value={message} />
+          <Button className='fButton' onClick={sendMessage} >send</Button>
+        </div>
       </div>
-      <div className='messages'>
-        {allMessages.map((message, i) => <div key={i} >user: {message.username}  message: {message.message}</div>)}
-      </div>
-      <div className='interaction'>
-        <input type='text' placeholder='message text' onChange={e => setMessage(e.target.value)} value={message} />
-        <button onClick={sendMessage} >send</button>
-      </div>
-    </div>
+    </StyledChat>
   );
 };
 

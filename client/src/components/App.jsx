@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, createContext} from 'react';
 import {
   HashRouter as Router,
   Switch,
@@ -21,6 +21,9 @@ import ChatRoom from './chat/ChatRoom.jsx';
 import BikeRegistry from './NavBar/BikeRegistry.jsx';
 
 import axios from 'axios';
+
+//import UserContext from './UserContext.jsx';
+
 
 
 
@@ -109,6 +112,7 @@ const App = () => {
   }, []);
 
   return (
+
     <div>
       <header>
         <h1>Bike Around and Find Out</h1>
@@ -199,6 +203,7 @@ const App = () => {
         </main>
       </Router>
     </div>
+
   );
 };
 

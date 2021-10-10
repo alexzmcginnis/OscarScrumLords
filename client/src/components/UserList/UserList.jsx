@@ -6,12 +6,7 @@ import styled from 'styled-components';
 import { ListGroup, ListGroupItem, Button, Card } from 'react-bootstrap';
 
 
-import {
-  HashRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
+
 
 const UserListStyles = styled.div`
   .fButton {

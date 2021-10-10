@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 //parent is App.jsx
-import { GoogleLogout } from 'react-google-login';
+
 import axios from 'axios';
 /******this all need to be redone */
 
