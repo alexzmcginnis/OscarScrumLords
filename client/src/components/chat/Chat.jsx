@@ -3,6 +3,11 @@ import React, {useState, useEffect} from 'react';
 const Chat = ({socket, username, room}) => {
 
   const [message, setMessage] = useState('');
+  const [allMessages, setAllMessages] = useState([]);
+  const [sentMessages, setSentMessages] = useState([]);
+  const [receivedMessages, setReceivedMessages] = useState([]);
+  const [messageList, setMessageList] = useState([]);
+
 
   const sendMessage = async () => {
     if (message) {
@@ -14,12 +19,17 @@ const Chat = ({socket, username, room}) => {
       };
 
       await socket.emit('message', messageObj);
+      setSentMessages(list => [...list, messageObj]);
+      console.log('sentMessages', sentMessages);
+     
+
     }
   };
 
   useEffect(() => {
     socket.on('receivedMessage', (data) => {
-      console.log('data', data);
+      setAllMessages ((list) => [...list, data]);
+  
     });
   }, [socket]);
 
@@ -29,7 +39,9 @@ const Chat = ({socket, username, room}) => {
       <div>
         <p>chatroom {room} </p>
       </div>
-      <div className='messages'></div>
+      <div className='messages'>
+        {allMessages.map((message, i) => <div key={i} >{message.message}</div>)}
+      </div>
       <div className='interaction'>
         <input type='text' placeholder='message text' onChange={e => setMessage(event.target.value)} />
         <button onClick={sendMessage} >send</button>
